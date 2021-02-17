@@ -1,0 +1,46 @@
+# Makefile for the SGE library
+# Created for PSP by SumolX@gmail.com
+
+
+SGE_VER = 030809
+
+PSPSDK = $(shell psp-config --pspsdk-path)
+PSPDIR = $(shell psp-config --psp-prefix)
+PSPBIN = $(PSPSDK)/../bin
+
+TARGET_LIB = libSGE.a
+
+OBJS = sge_blib.o sge_bm_text.o sge_collision.o sge_misc.o sge_primitives.o \
+       sge_rotation.o sge_shape.o sge_surface.o sge_textpp.o sge_tt_text.o
+
+CFLAGS = -Wall -G0 -O2 -ffast-math
+CFLAGS += $(shell $(PSPBIN)/sdl-config --cflags)
+CFLAGS += $(shell $(PSPBIN)/freetype-config --cflags)
+
+CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
+ASFLAGS = $(CFLAGS)
+
+LIBS = -lSDL_image -lstdc++
+LIBS += $(shell $(PSPBIN)/sdl-config --libs)
+LIBS += $(shell $(PSPBIN)/freetype-config --libs)
+
+include $(PSPSDK)/lib/build.mak
+
+config:
+	@echo "/* SGE Config header (generated automatically) */" >sge_config.h
+	@echo "#define SGE_VER $(SGE_VER)" >>sge_config.h	
+	@echo "#define _SGE_C_AND_CPP" >>sge_config.h
+	@echo "#define _SGE_HAVE_IMG" >>sge_config.h
+	@echo "#define FT_FREETYPE_H" >>sge_config.h
+	@echo "" >>sge_config.h
+	@echo "sge_config.h is now Ready!"
+	
+install: $(TARGET_LIB)
+	@echo "Installing libSGE into $(PSPDIR)/include/SGE $(PSPDIR)/lib"
+	@mkdir -p $(PSPDIR)/include/SGE $(PSPDIR)/lib
+	@cp sge_config.h sge_internal.h sge_surface.h sge_primitives.h \
+	    sge_misc.h sge_tt_text.h sge_bm_text.h sge_textpp.h sge_blib.h \
+	    sge_shape.h sge_collision.h sge_rotation.h $(PSPDIR)/include/SGE
+	@cp sge.h $(PSPDIR)/include/SGE/SGE.h
+	@cp libSGE.a  $(PSPDIR)/lib
+	@echo "Finished!"

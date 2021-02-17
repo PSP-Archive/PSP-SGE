@@ -1,0 +1,9 @@
+To Build:
+
+   make -f Makefile.psp
+
+
+Usage:
+
+   Update Makefile.psp TARGET for each example.
+   Place all *.bmp, *.ttf, *.png with EBOOT.PBP

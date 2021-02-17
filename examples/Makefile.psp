@@ -1,0 +1,41 @@
+# Makefile for the SGE library examples
+# Created for PSP by SumolX@gmail.com
+
+
+PSPSDK = $(shell psp-config --pspsdk-path)
+PSPDIR = $(shell psp-config --psp-prefix)
+PSPBIN = $(PSPSDK)/../bin
+
+CFLAGS = -Wall -G0 -O2 -ffast-math 
+CFLAGS += $(shell $(PSPBIN)/sdl-config --cflags) 
+CFLAGS += $(shell $(PSPBIN)/freetype-config --cflags)
+
+CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
+ASFLAGS = $(CFLAGS)
+
+LIBS = -lSGE -lSDL_image -lm -lpng -ljpeg -lz -lstdc++
+LIBS += $(shell $(PSPBIN)/sdl-config --libs)
+LIBS += $(shell $(PSPBIN)/freetype-config --libs)
+
+TARGET = fire
+#TARGET = bitmapfont
+#TARGET = collision
+#TARGET = blib
+#TARGET = rotate
+#TARGET = speedtest
+#TARGET = sprite
+#TARGET = sprite2
+#TARGET = poly
+#TARGET = basics
+#TARGET = blitting
+#TARGET = input
+#TARGET = alpha
+#TARGET = inputdeluxe
+#TARGET = sfont
+
+EXTRA_TARGETS = EBOOT.PBP
+PSP_EBOOT_TITLE = SGE Example: $(TARGET)
+
+OBJS = $(addsuffix .o, $(TARGET))
+
+include $(PSPSDK)/lib/build.mak

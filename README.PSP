@@ -1,0 +1,17 @@
+Requirements:
+
+   SDL
+   SDL_image
+   freetype
+
+
+To build and install:
+
+   make -f Makefile.psp config
+   make -f Makefile.psp
+   make -f Makefile.psp install
+
+
+Usage:
+
+   LIBS += -lSGE
